@@ -18,7 +18,6 @@ import {
 export class RegistrationComponent {
   private fb = inject(FormBuilder);
 
-
   form: FormGroup<{
     login: FormControl<string>;
     password: FormControl<string>;
@@ -50,8 +49,7 @@ export class RegistrationComponent {
   get passwordRepeatCtrl(){ return this.form.controls.passwordRepeat; }
   get emailCtrl()         { return this.form.controls.email; }
 
-  // Флаги ошибок длины
-
+  // Флаги ошибок длины 
   get loginLenErr(): boolean {
     return this.loginCtrl.touched && !!this.loginCtrl.errors?.['minlength'];
   }
@@ -62,8 +60,8 @@ export class RegistrationComponent {
     return this.passwordRepeatCtrl.touched && !!this.passwordRepeatCtrl.errors?.['minlength'];
   }
 
-  // Несовпадение паролей 
-
+  // Несовпадение паролей
+  
   get passwordMismatchErr(): boolean {
     return (
       this.passwordRepeatCtrl.touched &&
@@ -71,28 +69,25 @@ export class RegistrationComponent {
     );
   }
 
-  // Наличие ошибок у email
+  // Наличие ошибок у email 
 
   get emailErr(): boolean {
     return this.emailCtrl.touched && !!this.emailCtrl.errors;
   }
 
   onRegisterClick(): void {
-   
-
+  
     this.form.markAllAsTouched();
 
-    // запрещаем отправку если есть ошибка 
-
+    // запрещаем отправку если есть ошибка
     if (this.form.invalid || this.passwordMismatchErr) {
       return;
     }
 
     const { login, password, email } = this.form.getRawValue();
 
-
     console.log('REGISTRATION REQUEST →', { login, password, email });
 
-
+  
   }
 }
