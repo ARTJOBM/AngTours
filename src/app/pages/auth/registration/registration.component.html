@@ -1,1 +1,108 @@
-<p>registration works!</p>
+<section class="register">
+  <h1>Регистрация</h1>
+
+  <form [formGroup]="form" novalidate>
+
+    <!-- ЭТО ПОЛЕ ЛОГИН -->
+    <div class="form-row">
+      <label for="reg-login">Логин</label>
+      <input
+        id="reg-login"
+        type="text"
+        formControlName="login"
+        placeholder="Введите логин"
+        required
+        autocomplete="username"
+        (blur)="loginCtrl.markAsTouched()"
+        [class.input-error]="loginCtrl.touched && loginCtrl.hasError('minlength')"
+      />
+      <div class="error" *ngIf="loginCtrl.touched && loginCtrl.hasError('required')">
+        Укажите логин
+      </div>
+      <div class="error" *ngIf="loginCtrl.touched && loginCtrl.hasError('minlength')">
+        Минимум 3 символа
+      </div>
+    </div>
+
+    <!-- ЭТО ПОЛЕ ПАРОЛЬ -->
+    <div class="form-row">
+      <label for="reg-password">Пароль</label>
+      <input
+        id="reg-password"
+        type="password"
+        formControlName="password"
+        placeholder="Введите пароль"
+        required
+        autocomplete="new-password"
+        (blur)="passwordCtrl.markAsTouched()"
+        [class.input-error]="passwordCtrl.touched && passwordCtrl.hasError('minlength')"
+      />
+      <div class="error" *ngIf="passwordCtrl.touched && passwordCtrl.hasError('required')">
+        Укажите пароль
+      </div>
+      <div class="error" *ngIf="passwordCtrl.touched && passwordCtrl.hasError('minlength')">
+        Минимум 6 символов
+      </div>
+    </div>
+
+    <!-- ЭТО ПОЛЕ ПОВТОР ПАРОЛЯ -->
+    <div class="form-row">
+      <label for="reg-password-repeat">Повторите пароль</label>
+      <input
+        id="reg-password-repeat"
+        type="password"
+        formControlName="passwordRepeat"
+        placeholder="Повторите пароль"
+        required
+        autocomplete="new-password"
+        (blur)="passwordRepeatCtrl.markAsTouched()"
+        [class.input-error]="
+          passwordRepeatCtrl.touched &&
+          (passwordRepeatCtrl.hasError('minlength') || passwordMismatchErr)
+        "
+      />
+      <div class="error" *ngIf="passwordRepeatCtrl.touched && passwordRepeatCtrl.hasError('required')">
+        Повторите пароль
+      </div>
+      <div class="error" *ngIf="passwordRepeatCtrl.touched && passwordRepeatCtrl.hasError('minlength')">
+        Минимум 6 символов
+      </div>
+      <div class="error"
+           *ngIf="passwordRepeatCtrl.touched && !passwordRepeatCtrl.hasError('minlength') && passwordMismatchErr">
+        Пароли не совпадают
+      </div>
+    </div>
+
+    <!-- ЭТО ПОЛЕ EMAIL -->
+    <div class="form-row">
+      <label for="reg-email">Email</label>
+      <input
+        id="reg-email"
+        type="email"
+        formControlName="email"
+        placeholder="Введите email"
+        required
+        autocomplete="email"
+        (blur)="emailCtrl.markAsTouched()"
+        [class.input-error]="emailCtrl.touched && (emailCtrl.hasError('required') || emailCtrl.hasError('email'))"
+      />
+      <div class="error" *ngIf="emailCtrl.touched && emailCtrl.hasError('required')">
+        Укажите email
+      </div>
+      <div class="error" *ngIf="emailCtrl.touched && emailCtrl.hasError('email')">
+        Введите корректный email
+      </div>
+    </div>
+
+    <!-- КНОПКА -->
+    <button
+      type="button"
+      class="btn primary"
+      (click)="onRegisterClick()"
+      [disabled]="form.invalid || passwordMismatchErr"
+      [attr.aria-disabled]="form.invalid || passwordMismatchErr"
+    >
+      Зарегистрироваться
+    </button>
+  </form>
+</section>

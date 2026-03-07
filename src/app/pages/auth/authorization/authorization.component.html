@@ -1,1 +1,49 @@
-<p>authorization works!</p>
+<section class="auth">
+  <h1>Авторизация</h1>
+
+  <form [formGroup]="form" novalidate>
+
+    <!--ЭТО ПОЛЕ ЛОГИН -->
+    <div class="form-row">
+      <label for="login">Логин</label>
+      <input
+        id="login"
+        type="text"
+        formControlName="login"
+        placeholder="Введите логин"
+        required
+        autocomplete="username"
+        (blur)="loginCtrl.markAsTouched()"
+        [class.input-error]="loginLenErr"
+      />
+      <div class="error" *ngIf="loginLenErr">Минимум 3 символа</div>
+    </div>
+
+    <!--ЭТО ПОЛЕ ПАРОЛЬ -->
+    <div class="form-row">
+      <label for="password">Пароль</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        placeholder="Введите пароль"
+        required
+        autocomplete="current-password"
+        (blur)="passwordCtrl.markAsTouched()"
+        [class.input-error]="passwordLenErr"
+      />
+      <div class="error" *ngIf="passwordLenErr">Минимум 6 символов</div>
+    </div>
+
+    <!-- КНОПКА -->
+    <button
+      type="button"
+      class="btn primary"
+      (click)="onLoginClick()"
+      [disabled]="loginLenErr || passwordLenErr"
+      [attr.aria-disabled]="loginLenErr || passwordLenErr"
+    >
+      Авторизация
+    </button>
+  </form>
+</section>

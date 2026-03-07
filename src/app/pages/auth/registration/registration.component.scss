@@ -1,3 +1,48 @@
-:host {
-  display: block;
+.input-error {
+  border-color: #e53935 !important;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.1);
+}
+
+.error {
+  color: #e53935;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.register {
+  max-width: 360px;
+  margin: 24px auto;
+  display: grid;
+  gap: 10px;
+
+  .form-row {
+    display: grid;
+    gap: 6px;
+  }
+
+  input {
+    padding: 10px 12px;
+    border: 1px solid #cfd8dc;
+    border-radius: 8px;
+  }
+
+  .btn.primary {
+    
+display: block;
+  margin: 20px auto 0;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #1976d2;
+  color: #fff;
+  cursor: pointer;
+
+
+    &:disabled,
+    &[aria-disabled='true'] {
+      background: #90a4ae;
+      cursor: not-allowed;
+    }
+  }
 }
