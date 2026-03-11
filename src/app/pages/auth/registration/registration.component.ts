@@ -1,93 +1,27 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  Validators,
-  FormGroup,
-  FormControl
-} from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgIf } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   standalone: true,
   selector: 'app-registration',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, NgClass, NgIf, MatButtonModule],
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent {
-  private fb = inject(FormBuilder);
+  login = '';
+  email = '';
+  password = '';
+  passwordRepeat = '';
 
-  form: FormGroup<{
-    login: FormControl<string>;
-    password: FormControl<string>;
-    passwordRepeat: FormControl<string>;
-    email: FormControl<string>;
-  }> = this.fb.group({
-    login: this.fb.control('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      nonNullable: true,
-    }),
-    password: this.fb.control('', {
-      validators: [Validators.required, Validators.minLength(6)],
-      nonNullable: true,
-    }),
-    passwordRepeat: this.fb.control('', {
-      validators: [Validators.required, Validators.minLength(6)],
-      nonNullable: true,
-    }),
-    email: this.fb.control('', {
-      validators: [Validators.required, Validators.email],
-      nonNullable: true,
-    }),
-  });
-
-  // Геттеры 
-
-  get loginCtrl()         { return this.form.controls.login; }
-  get passwordCtrl()      { return this.form.controls.password; }
-  get passwordRepeatCtrl(){ return this.form.controls.passwordRepeat; }
-  get emailCtrl()         { return this.form.controls.email; }
-
-  // Флаги ошибок длины 
-  get loginLenErr(): boolean {
-    return this.loginCtrl.touched && !!this.loginCtrl.errors?.['minlength'];
-  }
-  get passwordLenErr(): boolean {
-    return this.passwordCtrl.touched && !!this.passwordCtrl.errors?.['minlength'];
-  }
-  get passwordRepeatLenErr(): boolean {
-    return this.passwordRepeatCtrl.touched && !!this.passwordRepeatCtrl.errors?.['minlength'];
-  }
-
-  // Несовпадение паролей
-  
-  get passwordMismatchErr(): boolean {
-    return (
-      this.passwordRepeatCtrl.touched &&
-      this.passwordRepeatCtrl.value !== this.passwordCtrl.value
-    );
-  }
-
-  // Наличие ошибок у email 
-
-  get emailErr(): boolean {
-    return this.emailCtrl.touched && !!this.emailCtrl.errors;
-  }
-
-  onRegisterClick(): void {
-  
-    this.form.markAllAsTouched();
-
-    // запрещаем отправку если есть ошибка
-    if (this.form.invalid || this.passwordMismatchErr) {
-      return;
-    }
-
-    const { login, password, email } = this.form.getRawValue();
-
-    console.log('REGISTRATION REQUEST →', { login, password, email });
-
-  
+  onAuth(ev: Event): void {
+    console.log('Регистрация:', {
+      login: this.login,
+      email: this.email,
+      password: this.password,
+      passwordRepeat: this.passwordRepeat
+    });
   }
 }

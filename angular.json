@@ -9,6 +9,9 @@
         "@schematics/angular:component": {
           "style": "scss",
           "skipTests": true
+        },
+         "@schematics/angular:service": {
+          "skipTests": true
         }
       },
       "root": "",
@@ -37,7 +40,10 @@
               "src/styles.scss",
               "https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/app/styles"]
+            }
           },
           "configurations": {
             "production": {

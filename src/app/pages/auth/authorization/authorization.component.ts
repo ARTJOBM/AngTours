@@ -1,57 +1,32 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgIf } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UserService } from '../../../services/user.service';
 
 @Component({
-   selector: 'app-authorization',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  selector: 'app-authorization',
+  imports: [FormsModule, NgClass, NgIf, MatButtonModule, MatCheckboxModule],
   templateUrl: './authorization.component.html',
   styleUrls: ['./authorization.component.scss'],
 })
 export class AuthorizationComponent {
-  private fb = inject(FormBuilder);
+  private userService = inject(UserService);
+  login = '';
+  password = '';
+  saveInStore = false;
 
+  constructor(private userService2: UserService){
 
-  form: FormGroup<{
-    login: FormControl<string>;
-    password: FormControl<string>;
-  }> = this.fb.group({
-    login: this.fb.control('', {
-      validators: [Validators.required, Validators.minLength(3)],
-      nonNullable: true,
-    }),
-    password: this.fb.control('', {
-      validators: [Validators.required, Validators.minLength(6)],
-      nonNullable: true,
-    }),
-  });
-
-  get loginCtrl() {
-    return this.form.controls.login;
-  }
-  get passwordCtrl() {
-    return this.form.controls.password;
   }
 
-
-  get loginLenErr(): boolean {
-    return this.loginCtrl.touched && !!this.loginCtrl.errors?.['minlength'];
+  onAuth(ev: Event): void {
+  if(this.saveInStore){
+    this.userService.saveUserInStore({login: this.login});
+  } else {
+    this.userService.setUser({login: this.login});
   }
-  get passwordLenErr(): boolean {
-    return this.passwordCtrl.touched && !!this.passwordCtrl.errors?.['minlength'];
-  }
-
-
-  onLoginClick(): void {
-    this.form.markAllAsTouched(); 
-
-    if (this.form.invalid) {
-      return;
-    }
-
-    const { login, password } = this.form.getRawValue();
-
-    
-    console.log('AUTH REQUEST →', { login, password });
   }
 }

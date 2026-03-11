@@ -1,49 +1,61 @@
 <section class="auth">
   <h1>Авторизация</h1>
 
-  <form [formGroup]="form" novalidate>
+  <p>Ваш логин: {{ login }}</p>
 
-    <!--ЭТО ПОЛЕ ЛОГИН -->
-    <div class="form-row">
-      <label for="login">Логин</label>
-      <input
-        id="login"
-        type="text"
-        formControlName="login"
-        placeholder="Введите логин"
-        required
-        autocomplete="username"
-        (blur)="loginCtrl.markAsTouched()"
-        [class.input-error]="loginLenErr"
-      />
-      <div class="error" *ngIf="loginLenErr">Минимум 3 символа</div>
+  <!-- ЛОГИН -->
+  <div class="form-row">
+    <input
+      placeholder="Логин"
+      [(ngModel)]="login"
+      name="login"
+      required
+      minlength="3"
+      #loginCtrl="ngModel"
+      [ngClass]="{ 'input-error': loginCtrl.invalid && loginCtrl.touched }"
+    />
+
+    <div class="error" *ngIf="loginCtrl.touched && loginCtrl.hasError('required')">
+      Укажите логин
     </div>
 
-    <!--ЭТО ПОЛЕ ПАРОЛЬ -->
-    <div class="form-row">
-      <label for="password">Пароль</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        placeholder="Введите пароль"
-        required
-        autocomplete="current-password"
-        (blur)="passwordCtrl.markAsTouched()"
-        [class.input-error]="passwordLenErr"
-      />
-      <div class="error" *ngIf="passwordLenErr">Минимум 6 символов</div>
+    <div class="error" *ngIf="loginCtrl.touched && loginCtrl.hasError('minlength')">
+      Минимум 3 символа
+    </div>
+  </div>
+
+  <!-- ПАРОЛЬ -->
+  <div class="form-row">
+    <input
+      type="password"
+      placeholder="Пароль"
+      [(ngModel)]="password"
+      name="password"
+      required
+      minlength="6"
+      #passwordCtrl="ngModel"
+      [ngClass]="{ 'input-error': passwordCtrl.invalid && passwordCtrl.touched }"
+    />
+
+    <div class="error" *ngIf="passwordCtrl.touched && passwordCtrl.hasError('required')">
+      Укажите пароль
     </div>
 
-    <!-- КНОПКА -->
-    <button
-      type="button"
-      class="btn primary"
-      (click)="onLoginClick()"
-      [disabled]="loginLenErr || passwordLenErr"
-      [attr.aria-disabled]="loginLenErr || passwordLenErr"
-    >
-      Авторизация
-    </button>
-  </form>
+    <div class="error" *ngIf="passwordCtrl.touched && passwordCtrl.hasError('minlength')">
+      Минимум 6 символов
+    </div>
+  </div>
+  <div class="mt-3">
+    <mat-checkbox [disableRipple]="true" [(ngModel)]="saveInStore">Сохранить</mat-checkbox>
+  </div>
+
+  <!-- КНОПКА -->
+  <button
+    class="btn primary"
+    mat-flat-button
+    (click)="onAuth($event)"
+    [disabled]="loginCtrl.invalid || passwordCtrl.invalid"
+  >
+    Авторизация
+  </button>
 </section>
