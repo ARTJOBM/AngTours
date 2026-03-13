@@ -5,5 +5,10 @@ import { LayoutComponent } from './layout/layout.component';
 export const routes: Routes = [
    
     {path:'', component:LayoutComponent},
-    {path: 'auth',component:AuthComponent }
+
+    //{path: '',  loadComponent: () => import('./layout/layout.component').then(c => c.LayoutComponent)},
+
+    {path: 'auth',  loadComponent: () => import('./pages/auth/auth.component').then(c => c.AuthComponent)},
+    
+    //{path: 'auth',component:AuthComponent }
 ];
