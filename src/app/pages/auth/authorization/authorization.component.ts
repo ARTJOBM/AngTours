@@ -6,6 +6,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserService } from '../../../services/user.service';
 import { UserApiService } from '../../../services/api/user-api.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-authorization',
@@ -18,6 +19,7 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
   private userService = inject(UserService);
   private userApiService = inject(UserApiService);
   private _snackBar = inject(MatSnackBar);
+  private router = inject(Router)
 
   login = '';
   password = '';
@@ -43,6 +45,8 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
         } else {
           this.userService.setUser({ login: this.login });
         }
+
+        this.router.navigate(["/"])
 
         this._snackBar.open('Успешная авторизация', 'OK', { duration: 2000 });
       },
