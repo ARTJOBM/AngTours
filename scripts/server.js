@@ -34,7 +34,7 @@ app.post('/register', (req, res) => {
             });
  
             // send response
-            res.send('ok');
+            res.status(200).json({ status: "OK" })
         } else {
           throw new Error('Пользователь уже зарегестрирован');
         }

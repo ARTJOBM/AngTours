@@ -18,9 +18,7 @@ export class UserApiService {
     
      
 register(body: IRegistrationRequest): Observable<any> {
-  return this.http.post<any>(
-    this.api.register,
-    body,
+       return this.http.post<any>(this.api.register, body,
     { headers: { 'Content-Type': 'application/json' } }
   );
 
