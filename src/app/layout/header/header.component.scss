@@ -8,11 +8,41 @@
 
 .layout-header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; 
   align-items: center;
   padding: 10px 20px;
   height: 50px;
   background: var(--header-background);
   color: #fff;
-  
+}
+
+.left-block {
+  display: flex;
+  align-items: center;
+}
+
+.right-block {
+  display: flex;
+  align-items: center;
+}
+
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: monospace;  
+  font-size: 16px;
+  font-weight: 400;
+  position: relative;
+}
+
+app-menu {
+  display: flex;
+  align-items: center;
+}
+
+.time-wrap {
+  font-family: monospace;
+  font-size: 16px;
 }

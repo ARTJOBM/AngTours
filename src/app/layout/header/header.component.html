@@ -1,5 +1,17 @@
 <div class="layout-header">
-  <div class="header-right">
-    {{ user?.login || 'Гость' }}
+
+  <div class="left-block">
+    <div class="user">
+      {{ user?.login || 'Гость' }}
+
+      <app-menu [items]="menuItems"></app-menu>
+    </div>
   </div>
+
+  <div class="right-block">
+    <div class="time-wrap">
+      {{ date | date: "HH:mm:ss EEEE" }}
+    </div>
+  </div>
+
 </div>

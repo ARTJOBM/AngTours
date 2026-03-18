@@ -1,24 +1,41 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
+import { DatePipe } from '@angular/common';
+import { MenuComponent } from "./menu/menu.component";
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [],
+  imports: [DatePipe, MenuComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  date = new Date();
+  
   private userService = inject(UserService);
 
   get user() {
     return this.userService.getUser();
   }
 
+
+menuItems = [
+  {
+    route: 'auth',
+    title: 'Авторизация' 
+  }
+]
+
   ngOnInit(): void {
+
     const raw = localStorage.getItem('user');
     if (raw) {
       this.userService.setUser(JSON.parse(raw));
     }
+
+ 
+    setInterval(() => {
+      this.date = new Date();
+    }, 1000);
   }
 }

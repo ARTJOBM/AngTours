@@ -1,0 +1,12 @@
+<div class="d-flex flex-wrap">
+
+  @for (item of tours; track $index) {
+    <div class="tour-item">
+        <p>{{ item.type }}</p>
+        <p>{{ item.date }}</p>
+        <p>{{ item.description }}</p>
+        <img src="/img/{{ item.img }}" />
+    </div>
+  }
+
+</div>
