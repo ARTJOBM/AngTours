@@ -1,12 +1,20 @@
 <div class="d-flex flex-wrap">
 
   @for (item of tours; track $index) {
-    <div class="tour-item">
-        <p>{{ item.type }}</p>
-        <p>{{ item.date }}</p>
+    <mat-card class="tour-item">
+
+      <mat-card-header>
+        <mat-card-title>{{ item.type }}</mat-card-title>
+        <mat-card-subtitle>{{ item.date }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <img mat-card-image src="/img/{{ item.img }}" />
+
+      <mat-card-content>
         <p>{{ item.description }}</p>
-        <img src="/img/{{ item.img }}" />
-    </div>
+      </mat-card-content>
+
+    </mat-card>
   }
 
 </div>

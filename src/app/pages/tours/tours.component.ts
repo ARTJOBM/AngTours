@@ -1,9 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { ToursService } from '../../services/tours.service';
 
 @Component({
   selector: 'app-tours',
-  imports: [],
+  standalone: true,
+  imports: [MatCardModule],
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.scss']
 })

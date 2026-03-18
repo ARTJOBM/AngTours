@@ -10,6 +10,7 @@ import { MenuComponent } from "./menu/menu.component";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+
   date = new Date();
   
   private userService = inject(UserService);
@@ -19,12 +20,13 @@ export class HeaderComponent implements OnInit {
   }
 
 
+
 menuItems = [
-  {
-    route: 'auth',
-    title: 'Авторизация' 
-  }
-]
+  { route: '', title: 'Главная' },
+  { route: 'settings', title: 'Настройки' },
+  { route: 'auth', title: 'Авторизация' }
+];
+
 
   ngOnInit(): void {
 
