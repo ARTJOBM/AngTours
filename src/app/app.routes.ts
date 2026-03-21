@@ -5,16 +5,12 @@ import { ToursComponent } from './pages/tours/tours.component';
 
 export const routes: Routes = [
    
-
-
-
     {path: 'auth',  loadComponent: () => import('./pages/auth/auth.component').then(c => c.AuthComponent)},
     
  
-    {path: '', component: LayoutComponent, children: [{ path: '', component: ToursComponent }]},
-
-    
-    {path: 'settings', loadComponent: () => import('./pages/settings/settings.component').then(c => c.SettingsComponent)},
+    {path: '', component: LayoutComponent, children: [{ path: '', component: ToursComponent }, 
+        
+    {path: 'settings', loadComponent: () => import('./pages/settings/settings.component').then(c => c.SettingsComponent)},]},
 
 
 ];

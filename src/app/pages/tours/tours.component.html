@@ -3,15 +3,17 @@
   @for (item of tours; track $index) {
     <mat-card class="tour-item">
 
-      <mat-card-header>
-        <mat-card-title>{{ item.type }}</mat-card-title>
-        <mat-card-subtitle>{{ item.date }}</mat-card-subtitle>
-      </mat-card-header>
-
       <img mat-card-image src="/img/{{ item.img }}" />
 
-      <mat-card-content>
+      <mat-card-content class="card-content">
+        <mat-card-title>{{ item.name }}</mat-card-title>
+        <mat-card-subtitle>{{ item.tourOperator }}</mat-card-subtitle>
+
         <p>{{ item.description }}</p>
+
+        <div class="footer">
+          <span class="price">{{ item.price }}</span>
+        </div>
       </mat-card-content>
 
     </mat-card>
