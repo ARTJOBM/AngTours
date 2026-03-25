@@ -8,7 +8,10 @@ export interface ITour {
     Location: string;
     type?: string;
     date?: string;
+
+    expanded?: boolean;
 }
+
 
 export interface IToursData {
 tours: ITour[];

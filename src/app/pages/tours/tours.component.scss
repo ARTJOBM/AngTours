@@ -1,12 +1,17 @@
-.d-flex {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+.masonry {
+  column-count: 4;
+  column-gap: 20px;
+  width: 100%;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 20px;
 }
 
 
 .tour-item {
-  width: calc(33.333% - 20px);
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -14,13 +19,11 @@
   overflow: hidden;
 }
 
-
 .tour-item img {
-  height: 160px;       
-  object-fit: cover;
   width: 100%;
+  height: 160px;
+  object-fit: cover;
 }
-
 
 .card-content {
   display: flex;
@@ -29,29 +32,61 @@
   padding: 16px;
 }
 
-
 mat-card-title {
-  font-size: 13px !important;
+  font-size: 13px;
   font-weight: 600;
 }
 
 mat-card-subtitle {
-  font-size: 11px !important;
+  font-size: 11px;
+}
+
+
+/* --- СВЁРНУТОЕ ОПИСАНИЕ --- */
+
+p.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 50px;
+  margin-bottom: 8px;
 }
 
 .card-content p {
-  flex: 1;
-  font-size: 11px !important;
+  font-size: 11px;
   line-height: 1.25;
   margin: 0 0 12px;
 }
 
 
+/* --- КНОПКА Показать больше / Скрыть --- */
+
+.toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #0077cc;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  margin-top: -6px;
+  margin-bottom: 8px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+
 .footer {
-  margin-top: auto;
-  font-weight: bold;
-  font-size: 14px;
-  color: #000;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  margin-top: 12px;
 }
 
 .price {
@@ -60,10 +95,20 @@ mat-card-subtitle {
   font-weight: 700;
 }
 
-/* Адаптив */
+.details-btn {
+  font-size: 12px;
+  padding: 4px 8px;
+  color: #0077cc;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+/* --- АДАПТИВ --- */
+
 @media (max-width: 900px) {
-  .tour-item {
-    width: calc(50% - 20px);
+  .masonry {
+    column-count: 2;
   }
 
   .tour-item img {
@@ -72,8 +117,8 @@ mat-card-subtitle {
 }
 
 @media (max-width: 600px) {
-  .tour-item {
-    width: 100%;
+  .masonry {
+    column-count: 1;
   }
 
   .tour-item img {

@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   menuItems = [
     { route: '', title: 'Главная' },
     { route: 'settings', title: 'Настройки' },
-    { route: 'auth', title: 'Авторизация' }
+    /*{ route: 'auth', title: 'Авторизация' } */
   ];
 
   logout() {

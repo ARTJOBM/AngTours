@@ -1,0 +1,17 @@
+<div class="tour-card" *ngIf="tour">
+    
+<img class="tour-image" [src]="'/img/' + tour.img" alt="{{ tour.name }}"/>
+
+
+  <h2>{{ tour.name }}</h2>
+  
+  <p><strong>Дата:</strong> {{ tour.date }}</p>
+
+  <p *ngIf="tour.description">
+
+    <strong>Описание:</strong> {{ tour.description }}
+
+  </p>
+
+  <button (click)="goToOrder()">Сформировать заказ</button>
+</div>

@@ -1,0 +1,18 @@
+<div class="order-container" *ngIf="tour">
+  <h2>Оформление заказа: {{ tour.name }}</h2>
+
+  <p><strong>Дата:</strong> {{ tour.date }}</p>
+  <p *ngIf="tour.description">
+    <strong>Описание:</strong> {{ tour.description }}
+  </p>
+
+  <form>
+    <label>ФИО</label>
+    <input type="text" placeholder="Введите ФИО" />
+
+    <label>Email</label>
+    <input type="email" placeholder="Введите email" />
+
+    <button type="submit">Отправить</button>
+  </form>
+</div>

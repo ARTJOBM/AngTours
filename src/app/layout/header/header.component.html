@@ -1,23 +1,24 @@
 <div class="layout-header">
 
- 
+  <!-- ЛЕВАЯ ЧАСТЬ = только меню -->
   <div class="left-block">
-    <div class="user">
-      {{ user?.login || 'Гость' }}
-
-      <app-menu [items]="menuItems"></app-menu>
-    </div>
+    <app-menu [items]="menuItems"></app-menu>
   </div>
 
-
+  <!-- ПРАВАЯ ЧАСТЬ = время, выход, Гость -->
   <div class="right-block">
+
     <div class="time-wrap">
       {{ date | date: "HH:mm:ss EEEE" }}
     </div>
-    
+
     <button mat-button color="warn" (click)="logout()">
       Выйти
     </button>
+
+    <div class="user-name">
+      {{ user?.login || 'Гость' }}
+    </div>
 
   </div>
 
