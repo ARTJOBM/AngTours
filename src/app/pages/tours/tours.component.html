@@ -3,6 +3,8 @@ appHighlightActive
     [sort]="sort"
     [initFirst]="true"
     selector=".tour-item"
+    (onEnter)="goToTour(tours[$event.index])"
+   
 >
 
   <ngx-masonry>

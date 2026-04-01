@@ -25,7 +25,7 @@ export class ToursComponent implements OnInit {
       this.tours = toursdata.tours;
     });
   }
-  goToTour(tour:any):void {
+  goToTour(tour: ITour):void {
     if (tour?.id) {
       this.router.navigate([`tour/${tour.id}`])
     }
@@ -40,6 +40,11 @@ sort(item1: HTMLElement, item2: HTMLElement): number {
   }
 } 
 
+onEnter(ev: {el: HTMLElement, index: number}) {
+const tourId = ev.el.getAttribute('data-tour-id');
+if (tourId) {
+  this.goToTour({ id: tourId} as ITour);
 }
-
-
+console.log('tourId', tourId);
+}
+}

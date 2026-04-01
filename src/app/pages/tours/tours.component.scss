@@ -10,6 +10,11 @@ ngx-masonry {
   align-items: start;
 }
 
+ngx-masonry {
+  height: auto !important;
+  position: static !important;
+}
+
 /* Masonry ломает layout через absolute — отключаем */
 ngx-masonry > div[ngxmasonryitem] {
   position: static !important;

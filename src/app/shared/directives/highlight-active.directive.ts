@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnChanges, SimpleChanges, OnInit} from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnChanges, SimpleChanges, OnInit, Output, EventEmitter} from '@angular/core';
 
 @Directive({
   selector: '[appHighlightActive]',
@@ -11,6 +11,7 @@ export class HighlightActiveDirective implements AfterViewInit, OnChanges, OnIni
   @Input() initFirst: boolean = false;
   @Input() updateView: boolean = false;
   @Input() sort!: (el1: HTMLElement, el2: HTMLElement) => number;
+  @Output() onEnter = new EventEmitter<{el: HTMLElement, index: number}>();
   
   
   private index: number = 0;
@@ -87,7 +88,17 @@ ngOnInit(): void {}
   }
 
   initKeyUp(event: KeyboardEvent) {
-    if (event.key === 'ArrowRight') this.changeIndex(1);
-    if (event.key === 'ArrowLeft') this.changeIndex(-1);
+    if (event.key === 'ArrowRight') 
+      {this.changeIndex(1);} 
+    else if (event.key === 'ArrowLeft') 
+       {this.changeIndex(-1);} 
+    else if (event.key === 'Enter') 
+       
+      
+      {this.onEnter.emit({
+        el: this.items[this.index], 
+        index: this.index
+      });
+    }
   }
 }
