@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ToursService } from '../../services/tours.service';
 import { ITour, IToursData } from '../../models/tours';
@@ -7,24 +7,32 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { HighlightActiveDirective } from '../../shared/directives/highlight-active.directive';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-tours',
   imports: [MatCardModule, NgxMasonryModule, MatButtonModule, DatePipe, HighlightActiveDirective],
   templateUrl: './tours.component.html',
-  styleUrls: ['./tours.component.scss']
+  styleUrls: ['./tours.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToursComponent implements OnInit {
   
   private toursService = inject(ToursService);
   private router = inject(Router)
+  private cdr = inject(ChangeDetectorRef);
   tours: any;
+
+
 
   ngOnInit(): void {
     this.toursService.getTours().subscribe((toursdata: IToursData) => {
       this.tours = toursdata.tours;
-    });
+      this.cdr.detectChanges();
+    })
   }
+
+
   goToTour(tour: ITour):void {
     if (tour?.id) {
       this.router.navigate([`tour/${tour.id}`])
