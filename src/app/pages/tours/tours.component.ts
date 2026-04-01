@@ -6,10 +6,11 @@ import { NgxMasonryModule } from 'ngx-masonry';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { HighlightActiveDirective } from '../../shared/directives/highlight-active.directive';
 
 @Component({
   selector: 'app-tours',
-  imports: [MatCardModule, NgxMasonryModule, MatButtonModule, DatePipe],
+  imports: [MatCardModule, NgxMasonryModule, MatButtonModule, DatePipe, HighlightActiveDirective],
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.scss']
 })
@@ -29,4 +30,16 @@ export class ToursComponent implements OnInit {
       this.router.navigate([`tour/${tour.id}`])
     }
   }
+
+sort(item1: HTMLElement, item2: HTMLElement): number {
+
+  if( parseFloat(item1.style.top) == parseFloat(item2.style.top)) {
+    return parseFloat(item1.style.left) < parseFloat (item2.style.left) ? -1 : 1;
+  } else {
+    return parseFloat(item1.style.top) - parseFloat (item2.style.top);
+  }
+} 
+
 }
+
+

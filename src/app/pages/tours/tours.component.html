@@ -1,11 +1,16 @@
-<div class="masonry">
+<div class="masonry"
+appHighlightActive
+    [sort]="sort"
+    [initFirst]="true"
+    selector=".tour-item"
+>
 
   <ngx-masonry>
-    @for (item of tours; track item.id) {
+    @for (item of tours; track item.id; let i = $index) {
 
-      <div class="masonry-item">
+      <div ngxMasonryItem class="masonry-item" [attr.index]="i">
 
-        <mat-card class="tour-item">
+        <mat-card class="tour-item" appearance="outlined">
 
           <img mat-card-image src="/img/{{ item.img }}" />
 

@@ -1,15 +1,29 @@
-.masonry {
-  column-count: 4;
-  column-gap: 20px;
+/* --- ОТКЛЮЧАЕМ MASONRY И ДЕЛАЕМ РОВНУЮ СЕТКУ --- */
+ngx-masonry {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   width: 100%;
+  box-sizing: border-box;
+
+  grid-auto-rows: auto;
+  align-items: start;
 }
 
+/* Masonry ломает layout через absolute — отключаем */
+ngx-masonry > div[ngxmasonryitem] {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+}
+
+/* --- ЯЧЕЙКА СЕТКИ --- */
 .masonry-item {
-  break-inside: avoid;
-  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-
+/* --- КАРТОЧКА ТУРА --- */
 .tour-item {
   width: 100%;
   display: flex;
@@ -17,14 +31,29 @@
   padding: 0;
   border-radius: 12px;
   overflow: hidden;
+  background: #fff;
+  border: 1px solid #ddd;
+  transition: 0.2s ease;
 }
 
+.tour-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.tour-item.active {
+  border: 2px solid #ff0000;
+}
+
+/* --- КАРТИНКА --- */
 .tour-item img {
   width: 100%;
   height: 160px;
   object-fit: cover;
+  display: block;
 }
 
+/* --- КОНТЕНТ --- */
 .card-content {
   display: flex;
   flex-direction: column;
@@ -32,6 +61,7 @@
   padding: 16px;
 }
 
+/* --- ЗАГОЛОВКИ (как в твоём коде) --- */
 mat-card-title {
   font-size: 13px;
   font-weight: 600;
@@ -41,9 +71,14 @@ mat-card-subtitle {
   font-size: 11px;
 }
 
+/* --- ТЕКСТ ОПИСАНИЯ --- */
+.card-content p {
+  font-size: 11px;
+  line-height: 1.25;
+  margin: 0 0 12px;
+}
 
 /* --- СВЁРНУТОЕ ОПИСАНИЕ --- */
-
 p.collapsed {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -55,15 +90,7 @@ p.collapsed {
   margin-bottom: 8px;
 }
 
-.card-content p {
-  font-size: 11px;
-  line-height: 1.25;
-  margin: 0 0 12px;
-}
-
-
 /* --- КНОПКА Показать больше / Скрыть --- */
-
 .toggle-btn {
   background: none;
   border: none;
@@ -74,17 +101,16 @@ p.collapsed {
   text-align: left;
   margin-top: -6px;
   margin-bottom: 8px;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
+.toggle-btn:hover {
+  text-decoration: underline;
+}
 
-
+/* --- ФУТЕР КАРТОЧКИ --- */
 .footer {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   margin-top: 12px;
 }
@@ -99,16 +125,19 @@ p.collapsed {
   font-size: 12px;
   padding: 4px 8px;
   color: #0077cc;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  background: none;
+  border: none;
+  cursor: pointer;
 }
-/* --- АДАПТИВ --- */
 
+.details-btn:hover {
+  text-decoration: underline;
+}
+
+/* --- АДАПТИВ --- */
 @media (max-width: 900px) {
-  .masonry {
-    column-count: 2;
+  ngx-masonry {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .tour-item img {
@@ -117,8 +146,8 @@ p.collapsed {
 }
 
 @media (max-width: 600px) {
-  .masonry {
-    column-count: 1;
+  ngx-masonry {
+    grid-template-columns: repeat(1, 1fr);
   }
 
   .tour-item img {
