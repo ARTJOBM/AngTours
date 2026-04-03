@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, NgModule, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,10 +7,12 @@ import { UserService } from '../../../services/user.service';
 import { UserApiService } from '../../../services/api/user-api.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { LoaderService } from '../../../services/loader.service';
+import { delay, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-authorization',
-  imports: [FormsModule, NgClass, NgIf, MatButtonModule, MatCheckboxModule, MatSnackBarModule],
+  imports: [FormsModule, NgClass, NgIf, MatButtonModule, MatCheckboxModule, MatSnackBarModule ],
   templateUrl: './authorization.component.html',
   styleUrls: ['./authorization.component.scss'],
 })
@@ -20,6 +22,7 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
   private userApiService = inject(UserApiService);
   private _snackBar = inject(MatSnackBar);
   private router = inject(Router)
+  private loader = inject(LoaderService);
 
   login = '';
   password = '';
@@ -38,7 +41,19 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
   }
 
   onAuth(ev: Event): void {
-    this.userApiService.auth({ login: this.login, password: this.password }).subscribe({
+
+    this.loader.setLoader(true);
+
+
+    this.userApiService.auth({ login: this.login, password: this.password })
+    
+     .pipe(
+      delay(1000), 
+      finalize(() => this.loader.setLoader(false)) 
+    )
+
+    
+    .subscribe({
       next: () => {
         if (this.saveInStore) {
           this.userService.saveUserInStore({ login: this.login });
