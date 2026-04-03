@@ -19,8 +19,7 @@ export class UserApiService {
     
      
     register(body: IRegisterUser): Observable<IRegUserRes> {
-       return this.http.post<IRegUserRes>(this.api.register, body, {responseType: 'json' }
-  );
+       return this.http.post<IRegUserRes>(this.api.register, body);
 
   }
 

@@ -2,16 +2,18 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { MatCardModule } from '@angular/material/card';
 import { ToursService } from '../../services/tours.service';
 import { ITour, IToursData } from '../../models/tours';
-import { NgxMasonryModule } from 'ngx-masonry';
+import { NgxMasonryModule, NgxMasonryOptions } from 'ngx-masonry';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { HighlightActiveDirective } from '../../shared/directives/highlight-active.directive';
 import { ChangeDetectorRef } from '@angular/core';
+import {MatInputModule} from  '@angular/material/input' ;
+import {MatFormFieldModule} from  '@angular/material/form-field' ;
 
 @Component({
   selector: 'app-tours',
-  imports: [MatCardModule, NgxMasonryModule, MatButtonModule, DatePipe, HighlightActiveDirective],
+  imports: [MatCardModule, NgxMasonryModule, MatButtonModule, DatePipe, HighlightActiveDirective, NgIf, MatFormFieldModule, MatInputModule],
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -22,12 +24,18 @@ export class ToursComponent implements OnInit {
   private router = inject(Router)
   private cdr = inject(ChangeDetectorRef);
   tours: any;
+  toursCopy: ITour[] = [];
+  updateMasonryLayout: boolean | null = null;
+  showMasonry = true;
+  masonryOptions: NgxMasonryOptions = {animations: {}
+}
 
 
 
   ngOnInit(): void {
     this.toursService.getTours().subscribe((toursdata: IToursData) => {
       this.tours = toursdata.tours;
+      this.toursCopy = [...this.tours];
       this.cdr.detectChanges();
     })
   }
@@ -54,5 +62,24 @@ if (tourId) {
   this.goToTour({ id: tourId} as ITour);
 }
 console.log('tourId', tourId);
+}
+
+searchTours(ev: Event): void{
+  console.log('call')
+  this.showMasonry = false;
+
+  const searchValue = (ev.target as HTMLInputElement).value;
+  const regExp = new RegExp(searchValue, 'i');
+
+  if (!searchValue) {
+    this.tours = [...this.toursCopy];
+  } else {
+     this.tours = this.toursCopy.filter((el) => {
+      return regExp.test(el.name);
+      });
+  }
+  setTimeout(() => {
+    this.showMasonry = true;
+  });
 }
 }

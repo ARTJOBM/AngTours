@@ -1,4 +1,18 @@
-/* --- ОТКЛЮЧАЕМ MASONRY И ДЕЛАЕМ РОВНУЮ СЕТКУ --- */
+/* Обертка поля поиска */
+.input-search-masonry {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;   
+}
+
+/* Само поле */
+.input-search-masonry mat-form-field {
+  width: 100%;
+  max-width: 500px;
+  font-size: 14px;
+}
+
 ngx-masonry {
   display: grid !important;
   grid-template-columns: repeat(4, 1fr);
@@ -15,7 +29,7 @@ ngx-masonry {
   position: static !important;
 }
 
-/* Masonry ломает layout через absolute — отключаем */
+
 ngx-masonry > div[ngxmasonryitem] {
   position: static !important;
   top: auto !important;
