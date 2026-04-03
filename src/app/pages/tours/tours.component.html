@@ -4,8 +4,11 @@
 </mat-form-field>
 </div>
 
+<div *ngIf="noResults" class="no-results"> Не найдено данных</div>
+
 <div class="masonry"
 appHighlightActive
+#hightLightDirective
   [sort]="sort"
   [initFirst]="true"
   [selector]="'.tour-item'"

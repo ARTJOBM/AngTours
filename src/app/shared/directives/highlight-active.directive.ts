@@ -5,6 +5,7 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input, OnChanges, S
   host: {'(document: keyup)': 'initKeyUp($event)'},
 })
 
+
 export class HighlightActiveDirective implements AfterViewInit, OnChanges, OnInit {
 
   @Input() selector: string = '';
@@ -38,15 +39,15 @@ ngOnInit(): void {}
       console.log('items', this.items); }, 1000);
   }
 
-  // вызывается при обновлении входных данных (например, когда загрузились туры)
+  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['updateView'] && !changes['updateView'].firstChange) {
-      setTimeout(() => this.updateItems());
+      setTimeout(() => this.initItems());
     }
   }
 
   // обновление списка карточек
-  private updateItems() {
+  public initItems(): void {
     this.items = Array.from(
       (this.el.nativeElement as HTMLElement).querySelectorAll(this.selector)
     );

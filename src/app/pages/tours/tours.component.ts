@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ToursService } from '../../services/tours.service';
 import { ITour, IToursData } from '../../models/tours';
-import { NgxMasonryModule, NgxMasonryOptions } from 'ngx-masonry';
+import { NgxMasonryComponent, NgxMasonryModule, NgxMasonryOptions } from 'ngx-masonry';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { DatePipe, NgIf } from '@angular/common';
@@ -18,19 +18,23 @@ import {MatFormFieldModule} from  '@angular/material/form-field' ;
   styleUrls: ['./tours.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToursComponent implements OnInit {
+export class ToursComponent implements OnInit, AfterViewInit {
+  @ViewChild ('hightLightDirective', {read: HighlightActiveDirective}) hightLightDirective!: HighlightActiveDirective;
+  @ViewChild (NgxMasonryComponent) masonry!: NgxMasonryComponent;
   
   private toursService = inject(ToursService);
-  private router = inject(Router)
+  private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   tours: any;
   toursCopy: ITour[] = [];
   updateMasonryLayout: boolean | null = null;
   showMasonry = true;
+  noResults = false;
   masonryOptions: NgxMasonryOptions = {animations: {}
+
 }
 
-
+ngAfterViewInit(): void {}
 
   ngOnInit(): void {
     this.toursService.getTours().subscribe((toursdata: IToursData) => {
@@ -77,9 +81,20 @@ searchTours(ev: Event): void{
      this.tours = this.toursCopy.filter((el) => {
       return regExp.test(el.name);
       });
+      
+      this.noResults = this.tours.length === 0;
   }
   setTimeout(() => {
-    this.showMasonry = true;
+    //this.showMasonry = true;
+    this.masonry.reloadItems();
+    this.masonry.layout();
   });
 }
+
+updateView(): void {
+  setTimeout(() => {
+    this.hightLightDirective.initItems();
+  });
+}
+
 }
