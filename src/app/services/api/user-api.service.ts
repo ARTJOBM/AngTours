@@ -4,6 +4,8 @@ import { Observable } from "rxjs";
 import { API } from "../../shared/api";
 import { IRegistrationRequest } from '../../pages/auth/registration/registration.component';
 import { IAuthUser, IAuthUserRes, IRegisterUser, IRegUserRes } from '../../models/user';
+import { LoaderService } from "../loader.service";
+import { delay, finalize } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -11,15 +13,32 @@ import { IAuthUser, IAuthUserRes, IRegisterUser, IRegUserRes } from '../../model
 export class UserApiService {
     private api = API;
     private http = inject(HttpClient);
+    private loader = inject(LoaderService);
 
     constructor() { }
     auth(body: IAuthUser): Observable <IAuthUserRes> {
-        return this.http.post<IAuthUserRes>(this.api.auth, body);
+
+        this.loader.setLoader(true);
+
+        return this.http.post<IAuthUserRes>(this.api.auth, body)
+
+     .pipe(
+     delay(1000), 
+     finalize(() => this.loader.setLoader(false)) 
+    );
     }
     
      
     register(body: IRegisterUser): Observable<IRegUserRes> {
-       return this.http.post<IRegUserRes>(this.api.register, body);
+
+       this.loader.setLoader(true);
+
+       return this.http.post<IRegUserRes>(this.api.register, body)
+    
+     .pipe(
+     delay(1000), 
+     finalize(() => this.loader.setLoader(false)) 
+    );
 
   }
 

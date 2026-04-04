@@ -7,8 +7,6 @@ import { UserService } from '../../../services/user.service';
 import { UserApiService } from '../../../services/api/user-api.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { LoaderService } from '../../../services/loader.service';
-import { delay, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-authorization',
@@ -22,7 +20,6 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
   private userApiService = inject(UserApiService);
   private _snackBar = inject(MatSnackBar);
   private router = inject(Router)
-  private loader = inject(LoaderService);
 
   login = '';
   password = '';
@@ -42,18 +39,8 @@ export class AuthorizationComponent implements OnInit, OnDestroy {
 
   onAuth(ev: Event): void {
 
-    this.loader.setLoader(true);
 
-
-    this.userApiService.auth({ login: this.login, password: this.password })
-    
-     .pipe(
-      delay(1000), 
-      finalize(() => this.loader.setLoader(false)) 
-    )
-
-    
-    .subscribe({
+    this.userApiService.auth({ login: this.login, password: this.password }).subscribe({
       next: () => {
         if (this.saveInStore) {
           this.userService.saveUserInStore({ login: this.login });

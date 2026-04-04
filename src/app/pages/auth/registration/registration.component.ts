@@ -4,8 +4,6 @@ import { NgClass, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { delay, finalize } from 'rxjs/operators';
-import { LoaderService } from '../../../services/loader.service';
 import { UserService } from '../../../services/user.service';
 import { UserApiService } from '../../../services/api/user-api.service';
 
@@ -26,7 +24,6 @@ export class RegistrationComponent {
   private userService = inject(UserService);
   private userApiService = inject(UserApiService);
   private _snackBar = inject(MatSnackBar);
-  private loader = inject(LoaderService);
 
   login = '';
   email = '';
@@ -48,18 +45,9 @@ export class RegistrationComponent {
       password: this.password,
     };
 
-    this.loader.setLoader(true);
 
-    this.userApiService.register(body)
-     
-      .pipe(
-      delay(2000),                         
-      finalize(() => this.loader.setLoader(false))
-    )
 
-    
-    
-    .subscribe({
+    this.userApiService.register(body).subscribe({
       next: () => {
         if (this.saveInStore) {
           this.userService.saveUserInStore({ login: this.login });
