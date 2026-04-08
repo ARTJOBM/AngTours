@@ -1,63 +1,72 @@
 <div class="input-search-masonry">
-<mat-form-field> 
-<input (input)="searchTours($event)" matInput placeholder = "Поиск...">
-</mat-form-field>
+  <mat-form-field>
+    <input #inputSearch matInput placeholder="Поиск..." >
+  </mat-form-field>
 </div>
 
-<div *ngIf="noResults" class="no-results"> Не найдено данных</div>
+<div *ngIf="noResults" class="no-results">
+  Не найдено данных
+</div>
 
-<div class="masonry"
-appHighlightActive
-#hightLightDirective
-  [sort]="sort"
-  [initFirst]="true"
-  [selector]="'.tour-item'"
-  (onEnter)="goToTour(tours[$event.index])"
-  *ngIf="tours?.length"
->
+<div class="masonry-container" *ngIf="tours?.length">
 
-  <ngx-masonry>
-    @for (item of tours; track item.id; let i = $index) {
+  <div
+    class="masonry"
+    appHighlightActive
+    #hightLightDirective
+    [sort]="sort"
+    [initFirst]="true"
+    [selector]="'.tour-item'"
+    (onEnter)="goToTour(tours[$event.index])"
+  >
 
-      <div ngxMasonryItem class="masonry-item" [attr.index]="i">
+    <ngx-masonry>
+      @for (item of tours; track item.id; let i = $index) {
 
-        <mat-card class="tour-item" appearance="outlined">
+        <div ngxMasonryItem class="masonry-item" [attr.index]="i">
 
-          <img mat-card-image src="/img/{{ item.img }}" />
+          <mat-card class="tour-item" appearance="outlined">
 
-          <mat-card-content class="card-content">
+            <img mat-card-image src="/img/{{ item.img }}">
 
-            <mat-card-title>{{ item.name }}</mat-card-title>
-            <mat-card-subtitle>{{ item.tourOperator }}</mat-card-subtitle>
-            
-            <p>{{ item.date | date: 'dd-MM-yyyy' }}</p>
+            <mat-card-content class="card-content">
 
-            <p [class.collapsed]="!item.expanded">
-              {{ item.description }}
-            </p>
+              <mat-card-title>{{ item.name }}</mat-card-title>
+              <mat-card-subtitle>{{ item.tourOperator }}</mat-card-subtitle>
 
-            <div class="buttons-row">
-              <button mat-button class="toggle-btn"
-                (click)="item.expanded = !item.expanded">
+              <p>{{ item.date | date: 'dd.MM.YYYY' }}</p>
+
+              <p [class.collapsed]="!item.expanded">
+                {{ item.description }}
+              </p>
+
+              <button
+                mat-button
+                class="toggle-btn"
+                (click)="item.expanded = !item.expanded"
+              >
                 {{ item.expanded ? 'Скрыть' : 'Показать больше' }}
               </button>
-            </div>
 
+              <div class="footer">
+                <span class="price">{{ item.price }}</span>
 
-            <div class="footer">
-              <span class="price">{{ item.price }}</span>
+                <button
+                  mat-button
+                  class="details-btn"
+                  (click)="goToTour(item)"
+                >
+                  Подробно
+                </button>
+              </div>
 
-              <button (click)="goToTour(item)" mat-button class="details-btn">
-                Подробно
-              </button>
-            </div>
+            </mat-card-content>
+          </mat-card>
 
-          </mat-card-content>
+        </div>
 
-        </mat-card>
+      }
+    </ngx-masonry>
 
-      </div>
-
-    }
-  </ngx-masonry>
+  </div>
 </div>

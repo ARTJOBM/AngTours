@@ -1,3 +1,24 @@
-<div class="aside m-3 vh-100">
-    aside
+<div class="aside m-3 h-100">
+
+   
+  <mat-form-field>
+    <mat-label>Выберите тип тура</mat-label>
+    <mat-select [(value)]="selectedType" (selectionChange)="chamgeTourType($event)">
+      @for (item of tourTypes; track item.key) {
+        <mat-option [value]="item.key">{{ item.label }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+
+   <mat-form-field appearance="fill">
+    <mat-label>Выберите дату тура</mat-label>
+    <input
+      matInput
+      [matDatepicker]="dateSelection"
+      (dateChange)="changeDate($event)"
+    >
+    <mat-datepicker-toggle matSuffix [for]="dateSelection"></mat-datepicker-toggle>
+    <mat-datepicker #dateSelection></mat-datepicker>
+  </mat-form-field>
 </div>

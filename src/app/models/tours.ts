@@ -16,4 +16,8 @@ export interface ITour {
 export interface IToursData {
 tours: ITour[];
 }
+
+export type ITourTypes ='all' | 'single' | 'group';
+
+export interface IFilterTypeLogic { key: ITourTypes, label?: string}
  

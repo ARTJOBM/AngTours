@@ -1,22 +1,22 @@
-
 :host {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* компонент = весь экран */
+  height: 100vh;
+  overflow: hidden; 
 }
 
 
 .input-search-masonry {
-  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
   display: flex;
   justify-content: center;
-  top: 0;
-  z-index: 20;
 
   background: #fff;
   padding: 12px 0;
-
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .input-search-masonry mat-form-field {
@@ -27,9 +27,10 @@
 
 
 .masonry-container {
-  flex: 1;
-  overflow-y: auto; /* скроллим только список туров */
-  padding: 0 0 20px 0;
+  flex: 1;            
+  overflow-y: auto;  
+  min-height: 0;        
+  padding-bottom: 20px;
 }
 
 
@@ -39,6 +40,8 @@
   color: #777;
   font-size: 35px;
 }
+
+
 
 ngx-masonry {
   display: grid !important;
@@ -61,21 +64,27 @@ ngx-masonry > div[ngxmasonryitem] {
   box-sizing: border-box;
 }
 
+/* ================================
+   КАРТОЧКА ТУРА
+   ================================ */
+
 .tour-item {
   width: 100%;
   display: flex;
   flex-direction: column;
   padding: 0;
+
   border-radius: 12px;
   overflow: hidden;
-  background: #fff;
+  background: #f9fafa;
   border: 1px solid #ddd;
+
   transition: 0.2s ease;
 }
 
 .tour-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 .tour-item.active {
@@ -88,6 +97,10 @@ ngx-masonry > div[ngxmasonryitem] {
   object-fit: cover;
   display: block;
 }
+
+/* ================================
+   КОНТЕНТ КАРТОЧКИ
+   ================================ */
 
 .card-content {
   display: flex;
@@ -111,25 +124,32 @@ mat-card-subtitle {
   margin: 0 0 12px;
 }
 
+/* свернутый текст */
 p.collapsed {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
   -webkit-box-orient: vertical;
+
+  -webkit-line-clamp: 3;
+  line-clamp: 3;       
+
   overflow: hidden;
   text-overflow: ellipsis;
   max-height: 50px;
   margin-bottom: 8px;
 }
 
+
+
 .toggle-btn {
   background: none;
   border: none;
   padding: 0;
+
   color: #0077cc;
   font-size: 12px;
   cursor: pointer;
   text-align: left;
+
   margin-top: -6px;
   margin-bottom: 8px;
 }
@@ -154,6 +174,7 @@ p.collapsed {
 .details-btn {
   font-size: 12px;
   padding: 4px 8px;
+
   color: #0077cc;
   background: none;
   border: none;
@@ -163,6 +184,7 @@ p.collapsed {
 .details-btn:hover {
   text-decoration: underline;
 }
+
 
 
 @media (max-width: 900px) {
