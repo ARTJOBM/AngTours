@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ToursService } from '../../services/tours.service';
 import { ITour, IToursData, ITourTypes } from '../../models/tours';
@@ -10,7 +10,7 @@ import { HighlightActiveDirective } from '../../shared/directives/highlight-acti
 import { ChangeDetectorRef } from '@angular/core';
 import {MatInputModule} from  '@angular/material/input' ;
 import {MatFormFieldModule} from  '@angular/material/form-field' ;
-import { debounceTime, fromEvent } from 'rxjs';
+import { Subject, debounceTime, fromEvent, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-tours',
@@ -20,7 +20,7 @@ import { debounceTime, fromEvent } from 'rxjs';
 
   //changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToursComponent implements OnInit, AfterViewInit {
+export class ToursComponent implements OnInit, AfterViewInit, OnDestroy  {
   @ViewChild ('hightLightDirective', {read: HighlightActiveDirective}) hightLightDirective!: HighlightActiveDirective;
   @ViewChild (NgxMasonryComponent) masonry!: NgxMasonryComponent;
   @ViewChild ('inputSearch') inputSearch!: ElementRef;
@@ -44,39 +44,45 @@ searchValue: string = '';
 
 tours$ = this.toursService.getTours();
 
+private _unsubscriber = new Subject(); // Общая подписка для управления отписками (Until)
+
 
 ngAfterViewInit(): void {
-fromEvent<InputEvent>(this.inputSearch.nativeElement,'input')
-.pipe(debounceTime(300))
-.subscribe((value) => {
-console.log('input')
-
-this.searchValue = (value.target as HTMLInputElement).value;
-this.initTourFilterLogic();
-
-//this.cdr.markForCheck();
-});
-
-}
+    fromEvent<InputEvent>(this.inputSearch.nativeElement,'input')
+      .pipe(
+        debounceTime(300),
+        takeUntil(this._unsubscriber)
+      )
+      .subscribe((value) => {
+        console.log('input');
+        this.searchValue = (value.target as HTMLInputElement).value;
+        this.initTourFilterLogic();
+      });
+  }
 
   ngOnInit(): void {
-    this.toursService.getTours().subscribe((toursdata: IToursData) => {
+    this.toursService.getTours().pipe(takeUntil(this._unsubscriber)).subscribe((toursdata: IToursData) => {
       this.tours = toursdata.tours;
       this.toursCopy = [...this.tours];
       this.cdr.detectChanges();
     });
 
-    this.toursService.tourType$.subscribe((tour) => {
+    this.toursService.tourType$.pipe(takeUntil(this._unsubscriber)).subscribe((tour) => {
       this.typeTourFilter = tour;
       this.initTourFilterLogic();
       
     console.log('tour', tour)  
     });
 
-    this.toursService.tourDate$.subscribe((date) => {
+    this.toursService.tourDate$.pipe(takeUntil(this._unsubscriber)).subscribe((date) => {
       this.selectedDate = date;
       this.initTourFilterLogic();
     });
+  }
+
+ngOnDestroy(): void {
+    this._unsubscriber.next(true);
+    this._unsubscriber.complete();
   }
 
 
@@ -118,7 +124,7 @@ updateView(): void {
 initTourFilterLogic(): void {
 //logic for type
 
-let filteredArr = [...this.tours]
+let filteredArr = [...this.toursCopy];
   if (this. typeTourFilter) {
     switch(this.typeTourFilter) {
   case 'group':
@@ -139,6 +145,7 @@ if (this.selectedDate) {
   const selected = this.selectedDate.toDateString();
 
   filteredArr = filteredArr.filter(t => {
+    if (!t.date) return false;
     const tourDate = new Date(t.date);
     return tourDate.toDateString() === selected;
   });
@@ -168,6 +175,4 @@ if (this.searchValue.trim()) {
   }
   )
 }
-
-
 }

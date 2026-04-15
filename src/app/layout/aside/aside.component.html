@@ -10,15 +10,28 @@
     </mat-select>
   </mat-form-field>
 
-
+ 
    <mat-form-field appearance="fill">
     <mat-label>Выберите дату тура</mat-label>
     <input
       matInput
+      [(ngModel)]="selectedDate"
       [matDatepicker]="dateSelection"
       (dateChange)="changeDate($event)"
     >
     <mat-datepicker-toggle matSuffix [for]="dateSelection"></mat-datepicker-toggle>
+
+    
+<button
+    mat-icon-button
+    matSuffix
+    *ngIf="selectedDate"
+    aria-label="Сбросить дату"
+    (click)="clearDate()">
+    <mat-icon>close</mat-icon>
+  </button>
+
+
     <mat-datepicker #dateSelection></mat-datepicker>
   </mat-form-field>
 </div>
