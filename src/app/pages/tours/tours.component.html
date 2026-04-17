@@ -36,6 +36,11 @@
 
               <p>{{ item.date | date: 'dd.MM.YYYY' }}</p>
 
+              <div (click)="showMap(item, $event, item.country?.iso_code2)" class="country-info">
+                страна: {{ item.country?.name_ru }}
+              <img class="flag" [src]="item.country?.flag_url">
+              </div>
+
               <p [class.collapsed]="!item.expanded">
                 {{ item.description }}
               </p>
@@ -48,16 +53,22 @@
                 {{ item.expanded ? 'Скрыть' : 'Показать больше' }}
               </button>
 
+               <button mat-icon-button (click)="toggleCart(item, $event)">
+               @if (cartService.isInCart(item.id)) {
+                 <!-- Красная иконка, если в корзине -->
+                <mat-icon style="color: #ff4d4f;">shopping_cart</mat-icon>
+               } @else {
+        <!-- Обычная иконка, если нет -->
+                <mat-icon>add_shopping_cart</mat-icon>
+      }
+    </button>
+
               <div class="footer">
                 <span class="price">{{ item.price }}</span>
 
                 <button
                   mat-button
-                  class="details-btn"
-                  (click)="goToTour(item)"
-                >
-                  Подробно
-                </button>
+                  class="details-btn" (click)="goToTour(item)"> Подробно </button>
               </div>
 
             </mat-card-content>
@@ -70,3 +81,27 @@
 
   </div>
 </div>
+
+<nz-modal
+
+      nzDraggable
+      nzCentered
+      (nzOnCancel)="showModal=false"
+      (nzOnOk)="showModal=false"
+      [(nzVisible)]="showModal"
+      [nzTitle]="mapCountryName"     
+    >
+      <ng-container *nzModalContent>
+        
+        @if (weatherData) {
+          <p>Погода: {{ weatherData.currentWeather }}°C</p>
+          <p *ngIf = "weatherData.rain > 0">Дождь: {{ weatherData.rain }}</p>
+          <p *ngIf = "weatherData.snowfall > 0">Снег: {{ weatherData.snowfall }}</p>
+                
+        }
+        
+    <app-map [location]="location"></app-map>
+
+
+      </ng-container>
+    </nz-modal>

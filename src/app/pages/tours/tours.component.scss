@@ -185,6 +185,35 @@ p.collapsed {
   text-decoration: underline;
 }
 
+/* ================================
+   ИНФОРМАЦИЯ О СТРАНЕ
+   ================================ */
+
+.country-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: color .2s;
+
+  &:hover {
+    font-weight: 700; // ← делает жирным ВСЁ внутри
+  }
+
+  .flag {
+    width: 20px;
+    height: 14px;
+  }
+}
+
+
+.country-info .flag {
+  width: 20px;
+  height: 14px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
 
 
 @media (max-width: 900px) {

@@ -1,20 +1,38 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ToursService } from '../../services/tours.service';
-import { ITour, IToursData, ITourTypes } from '../../models/tours';
+import { ITour, IToursData, ITourTypes, IWeatherData, ILocation } from '../../models/tours';
 import { NgxMasonryComponent, NgxMasonryModule, NgxMasonryOptions } from 'ngx-masonry';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { DatePipe, NgIf } from '@angular/common';
 import { HighlightActiveDirective } from '../../shared/directives/highlight-active.directive';
 import { ChangeDetectorRef } from '@angular/core';
-import {MatInputModule} from  '@angular/material/input' ;
-import {MatFormFieldModule} from  '@angular/material/form-field' ;
-import { Subject, debounceTime, fromEvent, takeUntil } from 'rxjs';
+import { MatInputModule} from  '@angular/material/input' ;
+import { MatFormFieldModule} from  '@angular/material/form-field' ;
+import { Subject, Subscription, debounceTime, fromEvent, takeUntil } from 'rxjs';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { MapComponent } from '../../shared/component/map/map.component';
+import { CartService } from '../../services/cart.service';
+import { MatIconModule } from '@angular/material/icon';
+
+
+
 
 @Component({
   selector: 'app-tours',
-  imports: [MatCardModule, NgxMasonryModule, MatButtonModule, DatePipe, HighlightActiveDirective, NgIf, MatFormFieldModule, MatInputModule],
+  imports: [
+  MatCardModule,
+  NgxMasonryModule, 
+  MatButtonModule, 
+  DatePipe, 
+  HighlightActiveDirective, 
+  NgIf, 
+  MatFormFieldModule, 
+  MatInputModule, 
+  NzModalModule, 
+  MapComponent,
+  MatIconModule],
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.scss'],
 
@@ -28,23 +46,37 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy  {
   private toursService = inject(ToursService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  public  cartService = inject(CartService);
+
+  toggleCart(item: ITour, event: MouseEvent) {
+    event.stopPropagation();
+    this.cartService.toggleCart(item);
+  }
 
   tours: any;
   toursCopy: ITour[] = [];
   updateMasonryLayout: boolean | null = null;
   showMasonry = true;
   noResults = false;
+  //showModal: boolean = false;
+  //mapCountryName: string | undefined = undefined;
+  selectedLocation: ILocation | null = null;
   masonryOptions: NgxMasonryOptions = {animations: {}
-
 }
 
 typeTourFilter: ITourTypes | null = null;
 selectedDate: Date | null = null;
 searchValue: string = '';
-
 tours$ = this.toursService.getTours();
-
+//typeUnsubscriber: Subscription;
+//dateUnsubscriber: Subscription;
 private _unsubscriber = new Subject(); // Общая подписка для управления отписками (Until)
+public showModal = false;
+public mapCountryName: string | undefined = undefined;
+location!: ILocation;
+weatherData!: IWeatherData;
+
+
 
 
 ngAfterViewInit(): void {
@@ -61,8 +93,8 @@ ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
-    this.toursService.getTours().pipe(takeUntil(this._unsubscriber)).subscribe((toursdata: IToursData) => {
-      this.tours = toursdata.tours;
+    this.toursService.getTours().pipe(takeUntil(this._unsubscriber)).subscribe((tours: ITour[]) => {
+      this.tours = tours;
       this.toursCopy = [...this.tours];
       this.cdr.detectChanges();
     });
@@ -175,4 +207,31 @@ if (this.searchValue.trim()) {
   }
   )
 }
+showMap(tour: ITour, ev: Event, code: string): void {
+  this.mapCountryName = tour.country?.name_ru;
+  
+  ev.stopPropagation();
+  this.toursService.getCountryByCode(code).subscribe((data) => {
+    if (data) {
+    const countrieInfo = data.countrieData;
+    console.log('countrieInfo', countrieInfo);
+
+    this.location = { 
+        lat: countrieInfo.latlng[0], 
+        lng: countrieInfo.latlng[1] 
+      };
+
+
+    this.weatherData = data.weatherDate;
+    this.showModal = true;
+    this.cdr.detectChanges();
+  }
+});
+
+}
+addToCart(item: ITour, event: MouseEvent) { 
+  event.stopPropagation();
+  this.cartService.toggleCart(item); // вызываем новый метод из сервиса
+}
+
 }

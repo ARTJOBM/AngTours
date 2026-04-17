@@ -11,11 +11,12 @@ import { delay, finalize } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class UserApiService {
-    private api = API;
+    private api = inject(API);
     private http = inject(HttpClient);
     private loader = inject(LoaderService);
 
-    constructor() { }
+    constructor() {}
+
     auth(body: IAuthUser): Observable <IAuthUserRes> {
 
         this.loader.setLoader(true);
