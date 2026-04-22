@@ -27,6 +27,47 @@
   gap: 24px; 
 }
 
+/* КНОПКИ КОРЗИНЫ И БЕЙДЖА */
+.cart-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 0 !important;
+  min-width: 44px !important; 
+  height: 44px !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 24px;
+  }
+
+  .badge {
+    position: absolute;
+    /* Сдвигаем кружок дальше от центра иконки */
+    top: -3px;  
+    right: -5px;   
+    
+    background: #ff0000; 
+    color: #fff;
+    font-size: 11px; 
+    font-weight: bold;
+    min-width: 21px; 
+    height: 20px;
+    padding: 0 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--header-background); 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+}
+
+
 .user {
   display: flex;
   align-items: center;
@@ -47,23 +88,26 @@ app-menu {
   font-size: 16px;
 }
 
-/* Стиль кнопки "Выйти" */
-.right-block button {
-  background: #ff4d4f;
-  color: #fff ;
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 6px 18px;
+
+.right-block button:not(.cart-btn) {
+  background: transparent;
+  color: #fff;
+  font-weight: 500;
+  font-size: 13px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  padding: 5px 15px;
   text-transform: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  transition: 0.2s;
-}
+  box-shadow: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
 
-.right-block button:hover {
-  background: #d9363e;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.22);
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
 }
-
 
 .user-name {
   font-family: monospace;

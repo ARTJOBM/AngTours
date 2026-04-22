@@ -20,6 +20,13 @@
       {{ user?.login || 'Гость' }}
     </div>
 
+      <button mat-icon-button routerLink="/cart" class="cart-btn">
+         <mat-icon>shopping_cart</mat-icon>
+             <span class="badge" *ngIf="(basketStore$ | async)?.length as count">
+           {{ count }}
+                </span>
+     </button>
+
   </div>
 
 </div>

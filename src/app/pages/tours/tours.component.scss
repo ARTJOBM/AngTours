@@ -5,26 +5,90 @@
   overflow: hidden; 
 }
 
-
+/* ============================================================
+   ПОИСК (ОБНОВЛЕННЫЙ: ШИРИНА 800px, ВЫСОТА 34px, ЛУПА СПРАВА)
+   ============================================================ */
 .input-search-masonry {
   position: sticky;
   top: 0;
   z-index: 100;
-
   display: flex;
   justify-content: center;
-
   background: #fff;
-  padding: 12px 0;
+  padding: 8px 0; /* Компактные отступы панели */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+
+  .search-wrapper {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    max-width: 800px;      /* Расширенное поле */
+    height: 34px;          /* Уменьшенная высота */
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+
+    &:focus-within {
+      border-color: #bbb;
+    }
+  }
+
+  mat-form-field {
+    flex: 1;               /* Занимает всё место слева от лупы */
+    width: 100%;
+    
+    ::ng-deep {
+      .mat-mdc-text-field-wrapper {
+        background: transparent !important;
+        padding: 0 12px !important;
+      }
+      .mat-mdc-form-field-infix {
+        padding: 0 !important;
+        min-height: 34px !important;
+        display: flex;
+        align-items: center;
+      }
+      /* Скрытие стандартных линий и отступов Material */
+      .mat-mdc-form-field-subscript-wrapper, 
+      .mdc-line-ripple, 
+      .mat-mdc-form-field-focus-indicator {
+        display: none !important;
+      }
+      input.mat-mdc-input-element {
+        margin: 0 !important;
+        font-size: 14px;
+        height: 100%;
+      }
+    }
+  }
+
+  .search-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;           /* Область иконки */
+    height: 100%;
+    border-left: 1px solid #e0e0e0; /* Разделительная черта */
+    cursor: pointer;
+    color: #ccc;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background: #fcfcfc;
+      color: #999;
+    }
+  }
 }
 
-.input-search-masonry mat-form-field {
-  width: 100%;
-  max-width: 500px;
-  font-size: 14px;
-}
-
+/* ============================================================
+   ВАШ ИСХОДНЫЙ КОД (БЕЗ ИЗМЕНЕНИЙ)
+   ============================================================ */
 
 .masonry-container {
   flex: 1;            
@@ -33,15 +97,12 @@
   padding-bottom: 20px;
 }
 
-
 .no-results {
   text-align: center;
   padding: 20px 0;
   color: #777;
   font-size: 35px;
 }
-
-
 
 ngx-masonry {
   display: grid !important;
@@ -64,21 +125,16 @@ ngx-masonry > div[ngxmasonryitem] {
   box-sizing: border-box;
 }
 
-/* ================================
-   КАРТОЧКА ТУРА
-   ================================ */
-
+/* КАРТОЧКА ТУРА */
 .tour-item {
   width: 100%;
   display: flex;
   flex-direction: column;
   padding: 0;
-
   border-radius: 12px;
   overflow: hidden;
   background: #f9fafa;
   border: 1px solid #ddd;
-
   transition: 0.2s ease;
 }
 
@@ -98,10 +154,7 @@ ngx-masonry > div[ngxmasonryitem] {
   display: block;
 }
 
-/* ================================
-   КОНТЕНТ КАРТОЧКИ
-   ================================ */
-
+/* КОНТЕНТ КАРТОЧКИ */
 .card-content {
   display: flex;
   flex-direction: column;
@@ -124,32 +177,25 @@ mat-card-subtitle {
   margin: 0 0 12px;
 }
 
-/* свернутый текст */
 p.collapsed {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-
   -webkit-line-clamp: 3;
   line-clamp: 3;       
-
   overflow: hidden;
   text-overflow: ellipsis;
   max-height: 50px;
   margin-bottom: 8px;
 }
 
-
-
 .toggle-btn {
   background: none;
   border: none;
   padding: 0;
-
   color: #0077cc;
   font-size: 12px;
   cursor: pointer;
   text-align: left;
-
   margin-top: -6px;
   margin-bottom: 8px;
 }
@@ -174,7 +220,6 @@ p.collapsed {
 .details-btn {
   font-size: 12px;
   padding: 4px 8px;
-
   color: #0077cc;
   background: none;
   border: none;
@@ -185,10 +230,7 @@ p.collapsed {
   text-decoration: underline;
 }
 
-/* ================================
-   ИНФОРМАЦИЯ О СТРАНЕ
-   ================================ */
-
+/* ИНФОРМАЦИЯ О СТРАНЕ */
 .country-info {
   display: flex;
   align-items: center;
@@ -197,30 +239,22 @@ p.collapsed {
   transition: color .2s;
 
   &:hover {
-    font-weight: 700; // ← делает жирным ВСЁ внутри
+    font-weight: 700; 
   }
 
   .flag {
     width: 20px;
     height: 14px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 2px;
   }
 }
-
-
-.country-info .flag {
-  width: 20px;
-  height: 14px;
-  object-fit: cover;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-}
-
 
 @media (max-width: 900px) {
   ngx-masonry {
     grid-template-columns: repeat(2, 1fr);
   }
-
   .tour-item img {
     height: 150px;
   }
@@ -230,8 +264,23 @@ p.collapsed {
   ngx-masonry {
     grid-template-columns: repeat(1, 1fr);
   }
-
   .tour-item img {
     height: 130px;
+  }
+}
+
+button[mat-mini-fab].cart-btn {
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 30px !important;
+
+  .mat-icon {
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    line-height: 18px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

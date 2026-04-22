@@ -1,37 +1,42 @@
-<div class="aside m-3 h-100">
+<div class="aside">
 
-   
-  <mat-form-field>
-    <mat-label>Выберите тип тура</mat-label>
-    <mat-select [(value)]="selectedType" (selectionChange)="chamgeTourType($event)">
-      @for (item of tourTypes; track item.key) {
-        <mat-option [value]="item.key">{{ item.label }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+  <!-- Выбор типа тура -->
+   <label class="custom-label"><b>Выберите тип тура</b></label>
+  <div class="field-wrapper">
+    <mat-form-field appearance="outline">
+      <mat-select [(value)]="selectedType" (selectionChange)="chamgeTourType($event)">
+        @for (item of tourTypes; track item.key) {
+          <mat-option [value]="item.key">{{ item.label }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
 
- 
-   <mat-form-field appearance="fill">
-    <mat-label>Выберите дату тура</mat-label>
-    <input
-      matInput
-      [(ngModel)]="selectedDate"
-      [matDatepicker]="dateSelection"
-      (dateChange)="changeDate($event)"
-    >
-    <mat-datepicker-toggle matSuffix [for]="dateSelection"></mat-datepicker-toggle>
+  <!-- Календарь -->
+  <div class="field-wrapper">
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        [(ngModel)]="selectedDate"
+        [matDatepicker]="dateSelection"
+        (dateChange)="changeDate($event)"
+        placeholder="Выберите дату тура"
+      >
+    </mat-form-field>
 
+    <div class="actions-container">
+      <!-- Кнопка сброса даты -->
+      <button *ngIf="selectedDate" class="clear-btn" (click)="clearDate()">
+        <mat-icon>close</mat-icon>
+      </button>
+      
+      <!-- Контейнер иконки через разделитель -->
+      <div class="icon-container" (click)="dateSelection.open()">
+        <mat-datepicker-toggle [for]="dateSelection"></mat-datepicker-toggle>
+      </div>
+    </div>
     
-<button
-    mat-icon-button
-    matSuffix
-    *ngIf="selectedDate"
-    aria-label="Сбросить дату"
-    (click)="clearDate()">
-    <mat-icon>close</mat-icon>
-  </button>
-
-
     <mat-datepicker #dateSelection></mat-datepicker>
-  </mat-form-field>
+  </div>
+
 </div>

@@ -1,27 +1,28 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ToursService } from '../../services/tours.service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ITour } from '../../models/tours';
 
 @Component({
   selector: 'app-order',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [RouterLink],
   templateUrl: './order.component.html',
-  styleUrl: './order.component.scss'
+  styleUrls: ['./order.component.scss']
 })
 export class OrderComponent implements OnInit {
+  tourId: string | null = null;
+  tour: ITour | null = null;
 
-  private readonly route = inject(ActivatedRoute);
-  private readonly http = inject(HttpClient);
 
-  tour: any;
+  constructor(
+    private tourService: ToursService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-
-    this.http.get(`http://localhost:3000/tour/${id}`).subscribe((data) => {
-      this.tour = data;
+    this.tourId = this.route.snapshot.paramMap.get('id');
+    this.tourService.getTourById(this.tourId).subscribe((tour: ITour) => {
+      this.tour = tour;
     });
   }
 }

@@ -1,22 +1,36 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, map } from 'rxjs';
 import { ITour } from '../models/tours';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private cartItems = signal<ITour[]>([]);
 
-  // Для счетчика в шапке
-  readonly count = computed(() => this.cartItems().length);
+  
+  private cartItems$ = new BehaviorSubject<ITour[]>([]);
+
+ 
+  readonly items$ = this.cartItems$.asObservable();
+
+
+  readonly count$ = this.cartItems$.pipe(
+    map(items => items.length)
+  );
 
   toggleCart(tour: ITour): void {
-    this.cartItems.update(items => 
-      items.some(i => i.id === tour.id) 
-        ? items.filter(i => i.id !== tour.id) // Удаляем
-        : [...items, tour]                   // Добавляем
-    );
+    const current = this.cartItems$.value;
+    const isExist = current.some(i => i.id === tour.id);
+    
+    const updated = isExist
+      ? current.filter(i => i.id !== tour.id)
+      : [...current, tour];
+
+    this.cartItems$.next(updated);
   }
 
-  isInCart(tourId: string): boolean {
-    return this.cartItems().some(item => item.id === tourId);
+
+  isInCart(tourId: string) {
+    return this.cartItems$.pipe(
+      map(items => items.some(item => item.id === tourId))
+    );
   }
 }

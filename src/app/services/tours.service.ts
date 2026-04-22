@@ -81,8 +81,32 @@ export class ToursService {
     this.tourDateSubject.next(date);
   }
 
+ getTourById(id: string | null): Observable<ITour> {
+  return this.getTours().pipe(
+    map((tours: ITour[]) => {
+      const tour = tours.find(t => t.id === id);
+      if (!tour) throw new Error('Tour not found');
+      return tour;
+    })
+  );
+}
+
+
+
   
 getCountryByCode(code: string) {
   return this.toursApi.getCountryByCode(code);}
+
+
+
+  
+  deleteTourById(id: string): Observable<any> {
+  return this.toursApi.deleteTour(id).pipe(
+    catchError((err) => {
+      console.error('Ошибка при удалении тура:', err);
+      return of(null);
+    })
+  );
+}
 
 }

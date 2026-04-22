@@ -1,58 +1,138 @@
+/* Основной контейнер aside */
 .aside {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 12px;
   padding: 8px;
+
+  /* Обертка для полей (создает рамку как на картинке) */
+  .field-wrapper {
+    display: flex;
+    align-items: center;
+    height: 34px;          /* Высота вровень с поиском */
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+    transition: border-color 0.2s;
+
+    &:focus-within {
+      border-color: #bbb;
+    }
+  }
+
+  /* Настройка Angular Material внутри обертки */
+  mat-form-field {
+    flex: 1;
+    width: 100%;
+    
+    ::ng-deep {
+      /* 1. Прячем стандартную рамку outline, так как у нас своя (field-wrapper) */
+      .mdc-notched-outline {
+        display: none !important;
+      }
+
+      /* 2. Сбрасываем внутренние отступы контейнера */
+      .mat-mdc-text-field-wrapper {
+        background: transparent !important;
+        padding: 0 12px !important;
+        height: 34px !important;
+      }
+
+      /* 3. Центрируем контент (инпут или селект) по вертикали */
+      .mat-mdc-form-field-infix {
+        padding: 0 !important;
+        min-height: 34px !important;
+        display: flex;
+        align-items: center;
+      }
+
+      /* 4. Убираем лишнее место под полем (ошибки/подсказки) */
+      .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
+      }
+
+      /* 5. Настройка шрифта */
+      .mat-mdc-select-value, 
+      input.mat-mdc-input-element {
+        font-size: 13px;
+        color: #333;
+      }
+
+      /* Цвет текста подсказки (placeholder) */
+      .mat-mdc-form-field-placeholder {
+        color: #999 !important;
+      }
+    }
+  }
+
+  /* Контейнер для кнопок действий справа */
+  .actions-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  /* Кнопка очистки (крестик) */
+  .clear-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ccc;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+    
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover { color: #f44336; }
+  }
+
+  /* Блок с иконкой календаря (с разделителем) */
+  .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 100%;
+    border-left: 1px solid #e0e0e0; /* Линия-разделитель */
+    cursor: pointer;
+    background: #fff;
+
+    ::ng-deep .mat-mdc-datepicker-toggle {
+      color: #ccc;
+      button {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    &:hover {
+      background: #f9f9f9;
+      ::ng-deep .mat-mdc-datepicker-toggle { color: #999; }
+    }
+  }
 }
 
-/* Общий стиль для полей */
-mat-form-field {
-  width: 100%;
-  --mdc-filled-text-field-container-color: #f3f4f6; /* светло-серый фон */
-  --mdc-filled-text-field-focus-active-indicator-color: #3b82f6; /* синий акцент */
-  --mdc-filled-text-field-hover-active-indicator-color: #3b82f6;
-  --mdc-filled-text-field-active-indicator-color: #3b82f6;
+/* Глобальные настройки для выпадающих элементов (чтобы не дублировать) */
+::ng-deep {
+  /* Стрелочка в mat-select */
+  .mat-mdc-select-arrow {
+    color: #ccc !important;
+  }
 
-  border-radius: 12px !important;
-}
-
-/* Лейбл */
-mat-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151; /* тёмно-серый */
-}
-
-/* Текст */
-mat-select,
-input[matInput] {
-  font-size: 15px;
-  font-weight: 500;
-  color: #111827; /* почти чёрный */
-}
-
-/* Иконка календаря */
-mat-datepicker-toggle {
-  color: #3b82f6; /* синий акцент */
-}
-
-/* Опции в select */
-mat-option {
-  font-size: 15px;
-  padding: 12px 16px !important;
-  border-radius: 6px;
-}
-
-mat-option:hover {
-  background: #e5e7eb !important; /* мягкий серый hover */
-}
-
-/* Hover эффект поля */
-mat-form-field:hover {
-  --mdc-filled-text-field-container-color: #e9eaed;
-}
-
-/* Активное состояние */
-.mat-mdc-form-field-focus-overlay {
-  background: rgba(59, 130, 246, 0.1) !important;
+  /* Стили самих опций в выпадающем списке */
+  .mat-mdc-option {
+    min-height: 38px !important;
+    font-size: 13px !important;
+  }
 }

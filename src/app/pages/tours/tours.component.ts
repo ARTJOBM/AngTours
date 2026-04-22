@@ -13,11 +13,13 @@ import { MatFormFieldModule} from  '@angular/material/form-field' ;
 import { Subject, Subscription, debounceTime, fromEvent, takeUntil } from 'rxjs';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { MapComponent } from '../../shared/component/map/map.component';
-import { CartService } from '../../services/cart.service';
+import { BasketService } from '../../services/basket.service'; 
 import { MatIconModule } from '@angular/material/icon';
 
 
-
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-tours',
@@ -32,11 +34,13 @@ import { MatIconModule } from '@angular/material/icon';
   MatInputModule, 
   NzModalModule, 
   MapComponent,
-  MatIconModule],
+  MatIconModule,
+  NzCardModule, 
+  NzIconModule, 
+  NzButtonModule],
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.scss'],
 
-  //changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToursComponent implements OnInit, AfterViewInit, OnDestroy  {
   @ViewChild ('hightLightDirective', {read: HighlightActiveDirective}) hightLightDirective!: HighlightActiveDirective;
@@ -46,21 +50,16 @@ export class ToursComponent implements OnInit, AfterViewInit, OnDestroy  {
   private toursService = inject(ToursService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
-  public  cartService = inject(CartService);
+  public basketService = inject(BasketService);
 
-  toggleCart(item: ITour, event: MouseEvent) {
-    event.stopPropagation();
-    this.cartService.toggleCart(item);
-  }
 
   tours: any;
   toursCopy: ITour[] = [];
   updateMasonryLayout: boolean | null = null;
   showMasonry = true;
   noResults = false;
-  //showModal: boolean = false;
-  //mapCountryName: string | undefined = undefined;
   selectedLocation: ILocation | null = null;
+  idsInCart: string[] = [];
   masonryOptions: NgxMasonryOptions = {animations: {}
 }
 
@@ -75,8 +74,6 @@ public showModal = false;
 public mapCountryName: string | undefined = undefined;
 location!: ILocation;
 weatherData!: IWeatherData;
-
-
 
 
 ngAfterViewInit(): void {
@@ -110,6 +107,14 @@ ngAfterViewInit(): void {
       this.selectedDate = date;
       this.initTourFilterLogic();
     });
+
+
+    this.basketService.basketStore$
+      .pipe(takeUntil(this._unsubscriber))
+      .subscribe(items => {
+        this.idsInCart = items.map(item => item.id);
+        this.cdr.detectChanges(); 
+      });
   }
 
 ngOnDestroy(): void {
@@ -183,12 +188,6 @@ if (this.selectedDate) {
   });
 }
 
-//if (this.selectedDate) {
-//    const selected = this.selectedDate.toISOString().split('T')[0];
-//    filteredArr = filteredArr.filter(t => t.date === selected);
-//  }
-
-
 // поиск по названию
 
 if (this.searchValue.trim()) {
@@ -229,9 +228,26 @@ showMap(tour: ITour, ev: Event, code: string): void {
 });
 
 }
-addToCart(item: ITour, event: MouseEvent) { 
-  event.stopPropagation();
-  this.cartService.toggleCart(item); // вызываем новый метод из сервиса
+
+isInBasket(item: ITour): boolean {
+  return this.idsInCart.includes(item.id);
 }
 
+
+removeTour(ev: Event, tour: ITour ): void {
+  ev.stopPropagation();
+  this.toursService.deleteTourById(tour?.id).subscribe()
+}
+
+setItemToBasket(ev: Event, item: ITour): void {
+    ev.stopPropagation();
+    this.basketService.setItemToBasket(item);
+    //this.cdr.detectChanges(); 
+  }
+
+  removeItemFromBasket(ev: Event, item: ITour): void {
+    ev.stopPropagation();
+    this.basketService.removeItemFromBasket(item);
+    //this.cdr.detectChanges();
+  }
 }

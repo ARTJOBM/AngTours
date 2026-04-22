@@ -50,6 +50,10 @@ export class TourApiService {
     );
   }
 
+  deleteTour(id: string): Observable<any> {
+  return this.http.delete(`${this.api.tours}/${id}`);
+}
+
  getCountryByCode(code: string): Observable<ICountryWeather> {
 
   return this.http.get<Coords[]>(this.api.countryByCode, {params: {codes: code}}).pipe(

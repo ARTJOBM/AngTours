@@ -1,7 +1,12 @@
 <div class="input-search-masonry">
+  <div class="search-wrapper">
   <mat-form-field>
     <input #inputSearch matInput placeholder="Поиск..." >
   </mat-form-field>
+  <div class="search-icon-container">
+      <mat-icon>search</mat-icon>
+    </div>
+</div>
 </div>
 
 <div *ngIf="noResults" class="no-results">
@@ -19,6 +24,7 @@
     [selector]="'.tour-item'"
     (onEnter)="goToTour(tours[$event.index])"
   >
+
 
     <ngx-masonry>
       @for (item of tours; track item.id; let i = $index) {
@@ -53,15 +59,18 @@
                 {{ item.expanded ? 'Скрыть' : 'Показать больше' }}
               </button>
 
-               <button mat-icon-button (click)="toggleCart(item, $event)">
-               @if (cartService.isInCart(item.id)) {
-                 <!-- Красная иконка, если в корзине -->
-                <mat-icon style="color: #ff4d4f;">shopping_cart</mat-icon>
-               } @else {
-        <!-- Обычная иконка, если нет -->
-                <mat-icon>add_shopping_cart</mat-icon>
-      }
-    </button>
+     <div class="basket my-2 ml-2">
+  @if (!isInBasket(item)) {
+    <i (click)="setItemToBasket($event, item)" class="pi pi-cart-plus"
+       style="color: green; cursor: pointer; font-size: 1.5rem;"></i>
+  }
+  @else {
+    <i (click)="removeItemFromBasket($event, item)" class="pi pi-cart-minus"
+       style="color: red; cursor: pointer; font-size: 1.5rem;"></i>
+  }
+</div>
+           
+
 
               <div class="footer">
                 <span class="price">{{ item.price }}</span>

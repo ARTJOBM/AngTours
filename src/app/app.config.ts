@@ -22,6 +22,4 @@ export const appConfig: ApplicationConfig = {
   
   { provide: NZ_I18N, useValue: ru_RU }, importProvidersFrom(FormsModule) 
   ]
-
-    
 };
