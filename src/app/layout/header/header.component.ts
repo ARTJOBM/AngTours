@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { DatePipe, AsyncPipe, NgIf } from '@angular/common';
 import { MenuComponent } from "./menu/menu.component";
-import { Router } from '@angular/router';
+import { Router, RouterModule  } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { NgZone } from '@angular/core';
 import { BasketService } from '../../services/basket.service';
@@ -13,7 +13,7 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 @Component({
   selector: 'app-header',
-  imports: [DatePipe, MenuComponent, MatButtonModule, MatIconModule, NgIf, AsyncPipe, OverlayBadgeModule],
+  imports: [DatePipe, MenuComponent, MatButtonModule, MatIconModule, RouterModule, AsyncPipe, OverlayBadgeModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit {
     return [
       { route: '', title: 'Главная' },
       { route: 'settings', title: 'Настройки' },
-      { route: 'Orders', title: 'Заказы' },
+      { route: 'orders', title: 'Заказы' },
     ];
   }
 

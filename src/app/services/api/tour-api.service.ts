@@ -19,6 +19,10 @@ export class TourApiService {
 
   constructor() {}
 
+createOrder(data: any): Observable<any> {
+    return this.http.post('http://localhost:3000/order', data);
+  }
+
   getTours(showloader = false): Observable<IToursData> {
     if (showloader) {
     this.loaderService.setLoader(true); 

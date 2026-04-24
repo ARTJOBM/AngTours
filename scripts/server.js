@@ -2,6 +2,7 @@ const fs = require('fs');
 const cors = require('cors');
 const express = require('express');
 const { log } = require('console');
+
  
 // user
 const userJson = "./server-data/users.json";
@@ -9,6 +10,9 @@ const userJson = "./server-data/users.json";
 const toursJson = "./server-data/tours.json";
 //countries
 const countriesJson = "./server-data/countries.json";
+// order
+const orderJson = "./server-data/order.json"; 
+
  
 const jsonFileData =  fs.readFileSync(userJson, 'utf-8');
 let  parseJsonData = JSON.parse(jsonFileData);
@@ -155,6 +159,20 @@ app.post('/auth', (req, res) => {
         res.send(parseJsonData);
     });
  
+
+
+ /* ************** post order */
+app.post('/order', (req, res) => {
+    const jsonFileData = fs.readFileSync(orderJson, 'utf-8');
+    const parseJsonData = JSON.parse(jsonFileData);
+    const order = req.body;
+    parseJsonData.orders.push(order);
+    const json = JSON.stringify({ orders: parseJsonData.orders }, null, 2);
+    fs.writeFileSync(orderJson, json, 'utf-8');
+    res.send({ status: 'ok' });
+});
+
+
 // run and listen serve
 app.listen(port, () => {
   console.log(`app listening on port ${port}`)

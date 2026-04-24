@@ -56,3 +56,19 @@ export interface ICountryWeather {
     weatherDate: IWeatherData;
     countrieData: Coords;
 }
+
+export interface IOrder {
+  userLogin: string | undefined;
+  tourId: string | null;
+  personalData: IPersonalData[]; 
+}
+
+
+export interface IPersonalData {
+  firstName: string;
+  lastName: string;
+  cardNumber: string;
+  birthDate: string | Date;
+  age: number;
+  citizenship: string;
+}

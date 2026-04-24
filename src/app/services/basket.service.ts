@@ -7,10 +7,9 @@ import { ITour } from '../models/tours';
 })
 export class BasketService {
   private basketStore: ITour[] = [];
+
   private basketSubject = new BehaviorSubject(this.basketStore);
   basketStore$ = this.basketSubject.asObservable();
-
-  readonly count$ = this.basketStore$.pipe(map(items => items.length));
 
   constructor() { }
 
@@ -21,7 +20,7 @@ export class BasketService {
   }
 
   removeItemFromBasket(item: ITour): void {
-    this.basketStore = this.basketStore.filter((tour) => tour !== item);
+    this.basketStore = this.basketStore.filter((tour) => tour.id !== item.id);
     item.inBasket = false;
     this.basketSubject.next(this.basketStore);
   }

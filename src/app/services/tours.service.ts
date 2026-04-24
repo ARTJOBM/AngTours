@@ -1,12 +1,14 @@
 import { inject, Inject, Injectable, OnInit } from "@angular/core";
 import { TourApiService } from "./api/tour-api.service";
-import { ITour, ITourTypes, ICountriesResponseItem, IToursData, IToursServerRes } from "../models/tours";
+import { ITour, ITourTypes, ICountriesResponseItem, IToursData, IToursServerRes, IOrder } from "../models/tours";
 import { delay, forkJoin, Observable, Subject, } from "rxjs";
 import { map, catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of,  } from 'rxjs';
 import { LoaderService } from "../services/loader.service";
-
-
+import { API } from "../shared/api";
+import { HttpClient } from "@angular/common/http";
+import { withLatestFrom } from "rxjs/operators";
+import { BasketService } from "./basket.service";
 
 @Injectable({
      providedIn: 'root'
@@ -21,6 +23,9 @@ export class ToursService {
   readonly tourDate$ = this.tourDateSubject.asObservable();
   
   private loaderService = inject(LoaderService);
+  private http = inject(HttpClient);
+  private apiConfig = inject(API); 
+  private basketService = inject(BasketService); 
 
   constructor() {}
 
@@ -33,10 +38,13 @@ export class ToursService {
     return forkJoin<[ICountriesResponseItem [], IToursServerRes]>([countries$, tours$]).pipe(
       delay(1000),
 
-      map((data) => {
+      withLatestFrom(this.basketService.basketStore$),
+      
+      map(([data, basketData]) => {
+        
         console.log('data', data);
-        let toursWithCountries: ITour[] = [];
 
+        let toursWithCountries: ITour[] = [];
         const toursArr = data[1].tours;
         const countriesMap = new Map();
 
@@ -46,6 +54,13 @@ export class ToursService {
 
         if (Array.isArray(toursArr)) {
           toursWithCountries = toursArr.map<ITour>((tour) => {
+
+         const isTourInBasket = basketData.find((basketTour: ITour) => basketTour.id === tour.id);
+          
+         if (isTourInBasket) {
+              (tour as any).inBasket = true;
+            }
+
             return {
               ...tour,
               country: countriesMap.get(tour.code) || null,
@@ -67,7 +82,9 @@ export class ToursService {
     );
   }
 
-
+ postOrder (orderBody: IOrder): Observable<any> {  
+    return this.http.post<any>(this.apiConfig.order, orderBody);
+  }
 
  // getTours() {
  //   return this.toursApi.getTours();
@@ -91,13 +108,9 @@ export class ToursService {
   );
 }
 
-
-
   
 getCountryByCode(code: string) {
   return this.toursApi.getCountryByCode(code);}
-
-
 
   
   deleteTourById(id: string): Observable<any> {

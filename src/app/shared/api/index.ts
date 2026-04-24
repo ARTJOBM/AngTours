@@ -8,7 +8,8 @@ export const apiData = {
   tours: `${environment.server}/tours`,
   countries: `${environment.server}/countries`,
   countryByCode: 'https://restcountries.com/v3.1/alpha/',
-  getWeather: 'https://api.open-meteo.com/v1/forecast'
+  getWeather: 'https://api.open-meteo.com/v1/forecast',
+  order: `${environment.server}/order`,
 } as const;
 
 export const API = new InjectionToken<IConfig>('app.config', {
