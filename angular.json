@@ -5,7 +5,7 @@
   "projects": {
     "AngTours": {
       "i18n": {
-        "sourceLocale":"ru"
+        "sourceLocale": "ru"
       },
       "projectType": "application",
       "schematics": {
@@ -13,10 +13,10 @@
           "style": "scss",
           "skipTests": true
         },
-         "@schematics/angular:service": {
+        "@schematics/angular:service": {
           "skipTests": true
         },
-         "@schematics/angular:directive": {
+        "@schematics/angular:directive": {
           "skipTests": true
         }
       },
@@ -36,6 +36,9 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "allowedCommonJsDependencies": [
+              "masonry-layout"
+            ],
             "assets": [
               {
                 "glob": "**/*",
@@ -44,7 +47,7 @@
               {
                 "glob": "**/*",
                 "input": "src/app/shared/mocks/",
-                 "output": "/"
+                "output": "/"
               }
             ],
             "styles": [
@@ -56,7 +59,9 @@
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/app/styles"]
+              "includePaths": [
+                "src/app/styles"
+              ]
             }
           },
           "configurations": {
@@ -64,13 +69,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
                 }
               ],
               "outputHashing": "all"

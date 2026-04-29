@@ -24,7 +24,7 @@ import { ButtonModule } from 'primeng/button';
     InputTextModule,
     DatePickerModule,
     ButtonModule,
-    NgTemplateOutlet, // Добавили, если планируете использовать шаблоны
+    NgTemplateOutlet, 
     
   ],
   templateUrl: './order.component.html',
@@ -35,7 +35,7 @@ export class OrderComponent implements OnInit {
   tour: ITour | null = null;
   userForm!: FormGroup;
 
-  // Массив полей как у автора (только нужные данные)
+  
   userFormFiledsArr = [
     { label: 'Имя', placeHolder: 'Введите имя', control: 'firstName' },
     { label: 'Фамилия', placeHolder: 'Введите фамилию', control: 'lastName' },

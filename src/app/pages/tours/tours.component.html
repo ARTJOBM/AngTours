@@ -59,16 +59,16 @@
                 {{ item.expanded ? 'Скрыть' : 'Показать больше' }}
               </button>
 
-     <div class="basket my-2 ml-2">
-  @if (!isInBasket(item)) {
-    <i (click)="setItemToBasket($event, item)" class="pi pi-cart-plus"
-       style="color: green; cursor: pointer; font-size: 1.5rem;"></i>
-  }
-  @else {
-    <i (click)="removeItemFromBasket($event, item)" class="pi pi-cart-minus"
-       style="color: red; cursor: pointer; font-size: 1.5rem;"></i>
-  }
-</div>
+             <div class="basket my-2 ml-2">
+             @if (!isInBasket(item)) {
+             <i (click)="setItemToBasket($event, item)" class="pi pi-cart-plus"
+             style="color: green; cursor: pointer; font-size: 1.5rem;"></i>
+             }
+             @else {
+             <i (click)="removeItemFromBasket($event, item)" class="pi pi-cart-minus"
+              style="color: red; cursor: pointer; font-size: 1.5rem;"></i>
+              }
+             </div>
            
 
 
